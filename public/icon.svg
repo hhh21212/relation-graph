@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#1c2440"/>
+      <stop offset="100%" stop-color="#0b1020"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f5f1e6" stop-opacity="1"/>
+      <stop offset="70%" stop-color="#d8c9a3" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#d8c9a3" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d8c9a3"/>
+      <stop offset="100%" stop-color="#8b93c9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 深色夜空底 -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+
+  <!-- 星点 -->
+  <g fill="#a6b0e0" opacity="0.5">
+    <circle cx="92" cy="120" r="2.5"/>
+    <circle cx="420" cy="96" r="2"/>
+    <circle cx="452" cy="300" r="2.5"/>
+    <circle cx="72" cy="330" r="2"/>
+    <circle cx="180" cy="64" r="1.8"/>
+    <circle cx="340" cy="420" r="2"/>
+  </g>
+
+  <!-- 星轨（淡金 / 淡紫） -->
+  <circle cx="256" cy="256" r="168" fill="none" stroke="url(#ring)" stroke-width="2" opacity="0.45" stroke-dasharray="3 10"/>
+  <circle cx="256" cy="256" r="112" fill="none" stroke="#d8c9a3" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- 关系连线 -->
+  <g stroke="#a6b0e0" stroke-width="1.5" opacity="0.55">
+    <line x1="256" y1="256" x2="256" y2="112"/>
+    <line x1="256" y1="256" x2="390" y2="190"/>
+    <line x1="256" y1="256" x2="372" y2="356"/>
+    <line x1="256" y1="256" x2="140" y2="356"/>
+    <line x1="256" y1="256" x2="122" y2="190"/>
+  </g>
+
+  <!-- 环绕节点 -->
+  <g fill="#f5f1e6" stroke="#d8c9a3" stroke-width="1">
+    <circle cx="256" cy="112" r="16"/>
+    <circle cx="390" cy="190" r="13"/>
+    <circle cx="372" cy="356" r="15"/>
+    <circle cx="140" cy="356" r="12"/>
+    <circle cx="122" cy="190" r="14"/>
+  </g>
+
+  <!-- 中心节点（我） -->
+  <circle cx="256" cy="256" r="40" fill="url(#glow)"/>
+  <circle cx="256" cy="256" r="16" fill="#f5f1e6"/>
+</svg>

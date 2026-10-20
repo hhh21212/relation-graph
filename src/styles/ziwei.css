@@ -1,0 +1,30 @@
+/* 紫微斗数：命盘 4×4 宫格（四角留空）。 */
+
+.ziwei-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.ziwei-cell {
+  min-height: 96px;
+  border-radius: 10px;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  cursor: pointer;
+}
+.ziwei-cell-ming {
+  border-color: var(--color-gold);
+}
+.ziwei-cell-sel {
+  outline: 2px solid var(--color-jade);
+  outline-offset: -2px;
+}
+.ziwei-corner {
+  min-height: 96px;
+}

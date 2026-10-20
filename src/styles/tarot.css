@@ -1,0 +1,158 @@
+/* 塔罗：牌背 + 3D 翻牌 + 扇形洗牌。全部走主题变量。 */
+
+.tarot-plaque {
+  text-align: center;
+  padding: 2px 0;
+}
+.tarot-plaque-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--color-text-dim);
+}
+
+/* 牌背主题色（渐变 + 星标） */
+.tarot-card-back {
+  background: linear-gradient(160deg, var(--color-gold-soft), #8a6b2f 78%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+}
+.tarot-card-back::after {
+  content: '✧';
+  font-size: 26px;
+  color: rgba(255, 250, 230, 0.85);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+.tarot-card-back-inner {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+}
+
+/* 牌面 */
+.tarot-card-face {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+}
+.tarot-card-face .tarot-num {
+  font-family: var(--font-kai);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.tarot-card-face .tarot-kw {
+  margin-top: 6px;
+  font-size: 9px;
+  line-height: 1.35;
+  color: var(--color-text-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  justify-content: center;
+}
+.tarot-card-face .tarot-dir {
+  margin-top: auto;
+  font-size: 9px;
+  text-align: center;
+  color: var(--color-text-dim);
+}
+
+/* 3D 翻转 */
+.tarot-card {
+  perspective: 900px;
+  width: 74px;
+  height: 118px;
+  position: relative;
+}
+.tarot-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.tarot-card.flipped .tarot-card-inner {
+  transform: rotateY(180deg);
+}
+.tarot-card-face,
+.tarot-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.tarot-card-face {
+  transform: rotateY(180deg);
+}
+
+/* 洗牌扇形：用 CSS 变量设置每张牌的位移与旋转 */
+.tarot-fan {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  position: relative;
+}
+.tarot-fan .tarot-card {
+  position: absolute;
+  transform: translateX(var(--fx, 0px)) translateY(var(--fy, 0px)) rotate(var(--fr, 0deg));
+  transition: transform 0.45s ease;
+}
+.tarot-fan.shuffling .tarot-card {
+  animation: tarot-wobble 0.9s ease-in-out infinite;
+}
+@keyframes tarot-wobble {
+  0%,
+  100% {
+    transform: translateX(var(--fx, 0px)) translateY(var(--fy, 0px)) rotate(var(--fr, 0deg));
+  }
+  50% {
+    transform: translateX(calc(var(--fx, 0px) + 8px)) translateY(calc(var(--fy, 0px) - 6px)) rotate(calc(var(--fr, 0deg) + 6deg));
+  }
+}
+
+/* 图鉴宫格 */
+.tarot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.tarot-mini {
+  aspect-ratio: 74 / 118;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.tarot-mini:active {
+  transform: scale(0.94);
+}
+.tarot-mini .tm-sym {
+  font-size: 18px;
+  line-height: 1;
+}
+.tarot-mini .tm-name {
+  font-family: var(--font-kai);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.tarot-mini .tm-en {
+  font-size: 8px;
+  color: var(--color-text-dim);
+  transform: scale(0.86);
+  white-space: nowrap;
+}

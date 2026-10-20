@@ -1,0 +1,117 @@
+/* 六爻摇卦：铜钱 + 卦象线。全部走主题变量，随皮肤切换。 */
+
+.liuyao-plaque {
+  text-align: center;
+  padding: 2px 0;
+}
+.liuyao-plaque-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--color-text-dim);
+}
+
+.liuyao-btn {
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+.liuyao-btn:active {
+  transform: scale(0.96);
+}
+.liuyao-btn-primary {
+  background: var(--color-accent);
+  color: #0b1020;
+}
+.liuyao-btn-ghost {
+  border: 1px solid var(--color-border);
+  color: var(--color-text-dim);
+}
+.liuyao-btn:disabled {
+  opacity: 0.55;
+}
+
+.liuyao-coins {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+.liuyao-coin {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 32% 28%, #fff7e0, var(--color-gold-soft) 46%, #8a6b2f 92%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(120, 90, 40, 0.4);
+  color: #4a3410;
+  font-family: var(--font-kai);
+  font-weight: 700;
+  font-size: 18px;
+}
+.liuyao-coin.spinning {
+  animation: liuyao-spin 0.7s linear infinite;
+}
+@keyframes liuyao-spin {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: rotateY(180deg) scale(1.08);
+  }
+  100% {
+    transform: rotateY(360deg) scale(1);
+  }
+}
+
+.liuyao-hexagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.liuyao-line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 8px;
+  transition: opacity 0.3s ease;
+}
+.liuyao-line-hidden {
+  opacity: 0.16;
+}
+.liuyao-bar {
+  display: block;
+  width: 58px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--color-gold);
+  box-shadow: 0 0 6px var(--color-gold-soft);
+}
+.liuyao-bar-split {
+  display: flex;
+  gap: 22px;
+  background: transparent;
+  box-shadow: none;
+}
+.liuyao-bar-split i {
+  display: block;
+  width: 18px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--color-gold);
+  box-shadow: 0 0 6px var(--color-gold-soft);
+}
+.liuyao-moving {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 6px var(--color-accent);
+}

@@ -1,0 +1,608 @@
+/* ============ 求签模块 · 签筒场景 + 签纸卡 ============
+   四套皮肤自适应：场景私有 token 默认「仙气飘飘」，按 html[data-theme] 覆写。
+   其余一律用语义变量（--color-gold / --color-mist / --color-jade / --bg-glow-* 等）随主题切换。 */
+
+/* ---------- 场景私有 token（默认 = 仙气飘飘：金竹 + 黛青签筒） ---------- */
+.qian-scene {
+  --qian-wood-hi: #f3e3b0; /* 竹木高光 */
+  --qian-wood-mid: #dcbd70; /* 竹木中调 */
+  --qian-wood-lo: #a9823c; /* 竹木暗调 */
+  --qian-wood-line: rgba(84, 60, 20, 0.42); /* 竹节纹 */
+  --qian-tube-a: #1b3650; /* 签筒亮部（黛青竹） */
+  --qian-tube-b: #0b1a2c; /* 签筒暗部 */
+  --qian-seal-a: #e06452; /* 红签号章亮 */
+  --qian-seal-b: #a52a1e; /* 红签号章暗 */
+  --qian-fog: var(--bg-glow-mist); /* 仙雾 */
+  --qian-glow: var(--bg-glow-gold); /* 金光晕 */
+}
+
+/* 水墨留白：宣纸签筒 + 墨竹，红章改朱砂 */
+[data-theme='shuimo'] .qian-scene {
+  --qian-wood-hi: #ece3c8;
+  --qian-wood-mid: #c6b590;
+  --qian-wood-lo: #8f7c55;
+  --qian-wood-line: rgba(90, 72, 40, 0.3);
+  --qian-tube-a: #f6efe0;
+  --qian-tube-b: #ded2b2;
+  --qian-seal-a: #c8503c;
+  --qian-seal-b: #8c2c20;
+  --qian-fog: rgba(138, 106, 143, 0.13);
+  --qian-glow: rgba(169, 126, 50, 0.18);
+}
+
+/* 鎏金夜色：玄墨签筒 + 亮金竹，金光晕最强 */
+[data-theme='liujin'] .qian-scene {
+  --qian-wood-hi: #f6e0a6;
+  --qian-wood-mid: #d4b066;
+  --qian-wood-lo: #8a6a2c;
+  --qian-wood-line: rgba(20, 14, 4, 0.5);
+  --qian-tube-a: #262116;
+  --qian-tube-b: #0d0c09;
+  --qian-seal-a: #e87a5a;
+  --qian-seal-b: #b03018;
+  --qian-fog: rgba(154, 143, 168, 0.16);
+  --qian-glow: rgba(199, 162, 82, 0.4);
+}
+
+/* 青绿山水：青玉签筒 + 玉竹，青绿仙雾 */
+[data-theme='qinglv'] .qian-scene {
+  --qian-wood-hi: #d7eadf;
+  --qian-wood-mid: #9cc8b6;
+  --qian-wood-lo: #5b9480;
+  --qian-wood-line: rgba(20, 60, 48, 0.34);
+  --qian-tube-a: #17443b;
+  --qian-tube-b: #0a241e;
+  --qian-seal-a: #e06452;
+  --qian-seal-b: #a52a1e;
+  --qian-fog: rgba(111, 208, 189, 0.3);
+  --qian-glow: rgba(201, 176, 106, 0.22);
+}
+
+/* ---------- 牌匾 ---------- */
+.qian-plaque {
+  text-align: center;
+  padding: 14px 26px 12px;
+  border-radius: 10px;
+  position: relative;
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+  box-shadow: inset 0 1px 0 var(--glass-hi), 0 8px 22px var(--glass-shadow);
+}
+.qian-plaque h1 {
+  font-size: 26px;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+  font-weight: 700;
+}
+.qian-plaque-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  letter-spacing: 0.45em;
+  padding-left: 0.45em;
+  color: var(--color-text-dim);
+}
+.qian-plaque::before,
+.qian-plaque::after {
+  content: '❖';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gold);
+  font-size: 12px;
+}
+.qian-plaque::before { left: 10px; }
+.qian-plaque::after { right: 10px; }
+
+/* ---------- 签筒场景 ---------- */
+.qian-scene {
+  position: relative;
+  width: min(100%, 360px);
+  height: 430px;
+  margin: 14px auto 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.qian-scene:active { cursor: grabbing; }
+
+/* 签筒后的一圈柔光底衬，避免太空 */
+.qian-scene::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 104%;
+  height: 92%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, var(--qian-glow), transparent 72%);
+  opacity: 0.5;
+  filter: blur(6px);
+}
+
+.qian-fog {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 130%;
+  height: 190px;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 52% at 50% 100%, var(--qian-glow), transparent 72%),
+    radial-gradient(50% 46% at 50% 92%, var(--qian-fog), transparent 74%),
+    radial-gradient(34% 30% at 50% 104%, var(--qian-glow), transparent 80%);
+  filter: blur(20px);
+  animation: qian-fog-breathe 3.6s ease-in-out infinite;
+}
+
+.qian-shaker {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 92%;
+  will-change: transform;
+}
+.qian-shaker.shaking {
+  animation: qian-tube-shake 3.5s cubic-bezier(0.45, 0.05, 0.5, 0.95) both;
+}
+
+/* 竹签片 */
+.qian-stick {
+  position: absolute;
+  bottom: 34px;
+  width: 20px;
+  z-index: 1;
+  transform-origin: 50% 100%;
+}
+/* 七支竹签扇形：中间最高，往两侧渐短渐斜 */
+.qian-stick.s-m { left: 50%; margin-left: -10px; height: 206px; }
+.qian-stick.s-l1 { left: 50%; margin-left: -14px; height: 178px; transform: rotate(-6deg); }
+.qian-stick.s-l2 { left: 50%; margin-left: -30px; height: 162px; transform: rotate(-12deg); }
+.qian-stick.s-l3 { left: 50%; margin-left: -46px; height: 148px; transform: rotate(-18deg); }
+.qian-stick.s-r1 { left: 50%; margin-left: -6px; height: 178px; transform: rotate(6deg); }
+.qian-stick.s-r2 { left: 50%; margin-left: 10px; height: 162px; transform: rotate(12deg); }
+.qian-stick.s-r3 { left: 50%; margin-left: 26px; height: 148px; transform: rotate(18deg); }
+
+.qian-stick-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 9px 9px 4px 4px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 29px, var(--qian-wood-line) 29px 32px),
+    linear-gradient(
+      90deg,
+      var(--qian-wood-lo) 0%,
+      var(--qian-wood-mid) 28%,
+      var(--qian-wood-hi) 42%,
+      color-mix(in srgb, var(--qian-wood-hi) 40%, #fff) 50%,
+      var(--qian-wood-hi) 58%,
+      var(--qian-wood-mid) 72%,
+      var(--qian-wood-lo) 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px var(--qian-wood-line),
+    inset -2px 0 3px var(--qian-wood-line),
+    0 3px 6px var(--glass-shadow);
+  transform-origin: 50% 100%;
+}
+.qian-stick-inner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 7px;
+  border-radius: 6px 6px 2px 2px;
+  background: var(--qian-wood-mid);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* 中签抬起 */
+.qian-stick.rising { z-index: 4; }
+.qian-stick.rising .qian-stick-inner {
+  animation: qian-rise-up 0.62s cubic-bezier(0.2, 0.9, 0.3, 1.08) forwards;
+}
+
+/* 竹签碰撞晃动 */
+.qian-stick-inner.rattling { animation: qian-rattle 0.16s ease-in-out infinite; }
+.qian-stick.s-l1 .qian-stick-inner.rattling,
+.qian-stick.s-r1 .qian-stick-inner.rattling { animation-delay: 0.04s; }
+.qian-stick.s-l2 .qian-stick-inner.rattling,
+.qian-stick.s-r2 .qian-stick-inner.rattling { animation-delay: 0.08s; }
+.qian-stick.s-l3 .qian-stick-inner.rattling,
+.qian-stick.s-r3 .qian-stick-inner.rattling { animation-delay: 0.12s; }
+
+/* 中签上的红签号章 */
+.qian-seal {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, var(--qian-seal-a), var(--qian-seal-b) 74%);
+  border: 2px solid var(--color-gold);
+  color: #fff6e2;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    0 0 14px color-mix(in srgb, var(--color-gold) 60%, transparent),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transition: opacity 0.32s ease, transform 0.32s ease;
+  z-index: 2;
+}
+.qian-stick.rising .qian-seal {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* 签筒（描金雕花：金口 / 回纹带 / 竖排金字 / 金座） */
+.qian-tube {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 170px;
+  z-index: 2;
+  border-radius: 18px 18px 38px 38px;
+  /* 竹节横纹 + 圆柱明暗 + 纵向底色，做出竹木质感 */
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0 44px,
+      rgba(0, 0, 0, 0.22) 44px 47px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(0, 0, 0, 0.28) 46%,
+      rgba(255, 255, 255, 0.08) 100%
+    ),
+    linear-gradient(
+      180deg,
+      var(--qian-tube-a) 0%,
+      color-mix(in srgb, var(--qian-tube-a) 62%, var(--qian-tube-b)) 34%,
+      var(--qian-tube-b) 100%
+    );
+  border: 2px solid var(--color-gold);
+  box-shadow:
+    0 16px 32px var(--glass-shadow),
+    inset 0 0 26px rgba(0, 0, 0, 0.45),
+    inset 0 2px 2px color-mix(in srgb, var(--color-gold) 16%, transparent);
+  overflow: hidden;
+}
+
+/* 金口：筒口一圈描金（俯视筒口的高光） */
+.qian-tube-rim {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 14px;
+  z-index: 3;
+  border-radius: 0 0 50% 50%;
+  background: linear-gradient(
+    180deg,
+    var(--color-gold-bright) 0%,
+    var(--color-gold) 60%,
+    color-mix(in srgb, var(--color-gold) 55%, var(--qian-tube-b)) 100%
+  );
+  box-shadow: 0 2px 8px var(--qian-glow), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* 金座：筒底一圈描金座 */
+.qian-tube-base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  z-index: 3;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-gold) 28%, var(--qian-tube-b)),
+    var(--color-gold) 55%,
+    var(--color-gold-bright) 100%
+  );
+  border-top: 1px solid var(--color-gold-bright);
+  box-shadow: 0 -3px 12px var(--qian-glow);
+}
+
+.qian-tube-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--color-gold);
+}
+
+.qian-tube-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-kai);
+  color: var(--color-gold-bright);
+  font-size: 20px;
+  letter-spacing: 0.28em;
+  white-space: nowrap;
+  text-shadow: 0 0 12px var(--glow), 0 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.qian-hint {
+  margin-top: 16px;
+  text-align: center;
+  color: var(--color-text-dim);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  line-height: 1.9;
+}
+.qian-hint b { color: var(--color-gold-bright); }
+.qian-hint .pulse {
+  display: inline-block;
+  animation: qian-hint-pulse 1.6s ease-in-out infinite;
+}
+
+/* ---------- 签纸卡（出签结果 / 查询结果共用） ---------- */
+.qian-paper {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, transparent);
+  box-shadow:
+    inset 0 0 0 3px color-mix(in srgb, var(--color-gold) 7%, transparent),
+    inset 0 1px 0 var(--glass-hi),
+    0 14px 34px var(--glass-shadow);
+  animation: qian-paper-unfold 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.08) both;
+}
+.qian-paper::before,
+.qian-paper::after {
+  content: '◈';
+  position: absolute;
+  color: var(--color-gold);
+  font-size: 16px;
+  opacity: 0.8;
+}
+.qian-paper::before { top: 8px; left: 12px; }
+.qian-paper::after { bottom: 8px; right: 12px; }
+
+.qian-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 14px;
+  border-radius: 999px;
+  font-family: var(--font-kai);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  font-size: 15px;
+  line-height: 1.6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  animation: qian-badge-pop 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+.qian-badge[data-level='ss'] { background: linear-gradient(135deg, var(--color-gold-bright), var(--color-gold)); color: #241a0c; }
+.qian-badge[data-level='sj'] { background: linear-gradient(135deg, var(--color-jade), color-mix(in srgb, var(--color-jade) 55%, #000)); color: #06251e; }
+.qian-badge[data-level='zj'] { background: linear-gradient(135deg, var(--color-mist), color-mix(in srgb, var(--color-mist) 60%, #000)); color: #0e0a1a; }
+.qian-badge[data-level='zp'] { background: linear-gradient(135deg, var(--color-dim), color-mix(in srgb, var(--color-dim) 55%, #000)); color: #0d141d; }
+.qian-badge[data-level='xx'] { background: linear-gradient(135deg, var(--color-danger), color-mix(in srgb, var(--color-danger) 55%, #000)); color: #2a0a08; }
+
+.qian-poem {
+  text-align: center;
+  font-family: var(--font-kai);
+  font-size: 19px;
+  line-height: 2;
+  letter-spacing: 0.1em;
+  color: var(--color-text);
+  padding: 8px 12px;
+  position: relative;
+}
+.qian-poem::before {
+  content: '『';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  color: var(--color-gold);
+  font-size: 22px;
+  opacity: 0.9;
+}
+.qian-poem::after {
+  content: '』';
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  color: var(--color-gold);
+  font-size: 22px;
+  opacity: 0.9;
+}
+
+.qian-divider {
+  height: 1px;
+  margin: 18px auto 0;
+  width: 70%;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-gold) 60%, transparent), transparent);
+}
+
+.qian-sec {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 35%, transparent);
+}
+.qian-sec-title {
+  text-align: center;
+  font-weight: 700;
+  color: var(--color-gold);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  padding-left: 0.2em;
+  margin-bottom: 8px;
+}
+.qian-sec-body {
+  color: var(--color-text-dim);
+  font-size: 15px;
+  line-height: 2;
+  text-align: justify;
+}
+
+.qian-fortunes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 12px;
+}
+.qian-f-key {
+  font-weight: 700;
+  color: var(--color-gold);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+.qian-f-val {
+  color: var(--color-text-dim);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ---------- 查询区 ---------- */
+.qian-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-kai);
+  font-size: 22px;
+  text-align: center;
+  color: var(--color-text);
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  padding: 10px 6px;
+  letter-spacing: 0.1em;
+  outline: none;
+}
+.qian-input::placeholder { color: var(--color-dim); }
+.qian-input:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 10px var(--bg-glow-gold);
+}
+
+.qian-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+.qian-num {
+  font-family: var(--font-kai);
+  font-size: 13px;
+  line-height: 1;
+  padding: 9px 0;
+  color: var(--color-text);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 45%, transparent);
+  border-radius: 7px;
+  cursor: pointer;
+  background: transparent;
+  transition: transform 0.1s ease;
+}
+.qian-num:active {
+  transform: scale(0.9);
+  background: var(--color-card);
+  color: var(--color-gold-bright);
+}
+
+.qian-btn {
+  font-family: var(--font-kai);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.qian-btn:active { transform: scale(0.96); }
+.qian-btn-primary {
+  color: #20160a;
+  background: linear-gradient(
+    180deg,
+    var(--color-gold-bright),
+    var(--color-gold) 50%,
+    color-mix(in srgb, var(--color-gold) 70%, #000)
+  );
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 6px 16px var(--glass-shadow), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  font-weight: 700;
+}
+.qian-btn-ghost {
+  color: var(--color-gold-bright);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+}
+
+/* ---------- keyframes ---------- */
+@keyframes qian-tube-shake {
+  0% { transform: rotate(0deg); }
+  7% { transform: rotate(-4deg); }
+  14% { transform: rotate(4deg); }
+  21% { transform: rotate(-3.5deg); }
+  28% { transform: rotate(3.5deg); }
+  35% { transform: rotate(-3deg); }
+  42% { transform: rotate(3deg); }
+  50% { transform: rotate(-2.4deg); }
+  58% { transform: rotate(2.4deg); }
+  66% { transform: rotate(-1.8deg); }
+  74% { transform: rotate(1.8deg); }
+  82% { transform: rotate(-5.5deg); }
+  91% { transform: rotate(4.5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes qian-rise-up {
+  0% { transform: translateY(0); }
+  60% { transform: translateY(-74px); }
+  100% { transform: translateY(-66px); }
+}
+
+@keyframes qian-rattle {
+  0%, 100% { transform: rotate(-3.5deg); }
+  50% { transform: rotate(3.5deg); }
+}
+
+@keyframes qian-paper-unfold {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes qian-badge-pop {
+  from { opacity: 0; transform: scale(0.4); }
+  60% { transform: scale(1.12); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes qian-fog-breathe {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+
+@keyframes qian-hint-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qian-shaker.shaking,
+  .qian-stick.rising .qian-stick-inner,
+  .qian-stick-inner.rattling,
+  .qian-fog,
+  .qian-paper,
+  .qian-badge,
+  .qian-hint .pulse {
+    animation: none;
+  }
+}

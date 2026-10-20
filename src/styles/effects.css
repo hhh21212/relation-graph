@@ -1,0 +1,403 @@
+/* ============ 全站主题专属特效 ============
+   由 Background 组件渲染一层 .fx-layer（fixed、负 z-index、pointer-events:none），
+   叠在星尘(body::before)/飘雾(body::after)之上、内容之下。
+   设计原则：高对比「亮核 + 强光晕」+ 清晰颗粒，让特效在深/浅底上都一眼可见。 */
+
+.fx-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---- 通用圆形粒子：实心亮核 + 同色光晕（--core / --halo 由各主题定义） ---- */
+.fx-p {
+  position: absolute;
+  left: var(--x);
+  bottom: -12px;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.92), var(--core) 46%, var(--core));
+  box-shadow:
+    0 0 calc(var(--s) * 1.2) calc(var(--s) * 0.2) var(--halo),
+    0 0 calc(var(--s) * 3.2) calc(var(--s) * 0.7) var(--halo-2, var(--halo));
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* 上升类粒子（灵光 / 火星 / 墨点） */
+.fx-rise {
+  animation: fx-rise var(--d) linear var(--delay) infinite;
+}
+@keyframes fx-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.4);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--op, 0.9);
+  }
+  70% {
+    opacity: var(--op, 0.9);
+  }
+  100% {
+    transform: translate3d(var(--dx, 0), -118vh, 0) scale(1.05);
+    opacity: 0;
+  }
+}
+
+/* 游动类粒子（萤火）：缓慢漂移 + 明灭 */
+.fx-wander {
+  bottom: auto;
+  top: var(--y);
+  animation: fx-wander var(--d) ease-in-out var(--delay) infinite;
+}
+@keyframes fx-wander {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--op, 1);
+  }
+  28% {
+    transform: translate3d(var(--dx, 40px), -46px, 0);
+    opacity: 0.35;
+  }
+  52% {
+    transform: translate3d(calc(var(--dx, 40px) * -1), -88px, 0);
+    opacity: var(--op, 1);
+  }
+  76% {
+    transform: translate3d(0, -40px, 0);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+}
+
+/* 下落类粒子（竹叶）：左右轻摆 + 旋转 */
+.fx-fall {
+  animation: fx-fall var(--d) ease-in-out var(--delay) infinite;
+}
+@keyframes fx-fall {
+  0% {
+    transform: translate3d(0, -8vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--op, 0.9);
+  }
+  24% {
+    transform: translate3d(calc(var(--dx, 40px) * 0.35), 26vh, 0) rotate(90deg);
+  }
+  50% {
+    transform: translate3d(calc(var(--dx, 40px) * -0.35), 52vh, 0) rotate(190deg);
+  }
+  74% {
+    transform: translate3d(calc(var(--dx, 40px) * 0.35), 78vh, 0) rotate(300deg);
+  }
+  90% {
+    opacity: var(--op, 0.9);
+  }
+  100% {
+    transform: translate3d(calc(var(--dx, 40px) * -0.2), 112vh, 0) rotate(var(--rot, 460deg));
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   仙气飘飘（金）：升腾灵光 + 流星划空 + 云带流光
+   ============================================================ */
+[data-theme='xianqi'] .fx-mote {
+  --core: #f7e6bd;
+  --halo: rgba(224, 197, 143, 0.9);
+  --halo-2: rgba(240, 217, 168, 0.38);
+}
+
+[data-theme='xianqi'] .fx-shoot {
+  position: absolute;
+  width: 150px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #ffffff, var(--color-gold-bright), transparent);
+  filter: drop-shadow(0 0 6px var(--color-gold-bright));
+  opacity: 0;
+  animation: fx-shoot var(--d, 7s) ease-in var(--delay, 0s) infinite;
+}
+@keyframes fx-shoot {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-32deg) scaleX(0.2);
+    opacity: 0;
+  }
+  7% {
+    opacity: 1;
+  }
+  22% {
+    transform: translate3d(56vw, 40vh, 0) rotate(-32deg) scaleX(1);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(56vw, 40vh, 0) rotate(-32deg) scaleX(1);
+    opacity: 0;
+  }
+}
+
+[data-theme='xianqi'] .fx-band {
+  position: absolute;
+  left: -30%;
+  top: 18%;
+  width: 80%;
+  height: 150px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(240, 217, 168, 0.16),
+    rgba(168, 155, 212, 0.13),
+    rgba(240, 217, 168, 0.1),
+    transparent
+  );
+  filter: blur(22px);
+  animation: fx-band 34s linear infinite;
+}
+@keyframes fx-band {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(170vw, 0, 0);
+  }
+}
+
+/* ============================================================
+   水墨留白（墨·浅底）：墨点升腾 + 墨滴晕染 + 远山淡影 + 朱砂印章
+   ============================================================ */
+[data-theme='shuimo'] .fx-mote {
+  --core: #2b2418;
+  --halo: rgba(58, 50, 38, 0.4);
+  --halo-2: rgba(58, 50, 38, 0.16);
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.5), #2b2418 52%, #2b2418);
+}
+[data-theme='shuimo'] .fx-mote.fx-red {
+  --core: #b03a2e;
+  --halo: rgba(176, 58, 46, 0.4);
+  --halo-2: rgba(176, 58, 46, 0.18);
+  background: radial-gradient(circle at 34% 30%, #ff9c8a, #b03a2e 55%, #b03a2e);
+}
+
+[data-theme='shuimo'] .fx-bloom {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(43, 36, 24, 0.55), transparent 70%);
+  animation: fx-bloom var(--d, 9s) ease-out var(--delay, 0s) infinite;
+}
+@keyframes fx-bloom {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(28);
+    opacity: 0;
+  }
+}
+
+[data-theme='shuimo'] .fx-mountain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.4;
+  animation: fx-breathe 13s ease-in-out infinite;
+}
+@keyframes fx-breathe {
+  0%,
+  100% {
+    opacity: 0.32;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+[data-theme='shuimo'] .fx-seal {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--color-danger);
+  border-radius: 6px;
+  color: var(--color-danger);
+  font-family: var(--font-kai);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: fx-seal var(--d, 15s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes fx-seal {
+  0%,
+  70% {
+    opacity: 0;
+    transform: rotate(-8deg) scale(0.55);
+  }
+  78% {
+    opacity: 0.92;
+    transform: rotate(-8deg) scale(1);
+  }
+  90% {
+    opacity: 0.92;
+    transform: rotate(-8deg) scale(1);
+  }
+  97% {
+    opacity: 0;
+    transform: rotate(-8deg) scale(0.85);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   鎏金夜色（金·夜）：鎏金流光 + 金色火星 + 星辉脉冲
+   ============================================================ */
+[data-theme='liujin'] .fx-ember {
+  --core: #ffd27a;
+  --halo: rgba(199, 162, 82, 0.95);
+  --halo-2: rgba(240, 216, 162, 0.45);
+}
+
+[data-theme='liujin'] .fx-sheen {
+  position: absolute;
+  top: -20%;
+  width: 300px;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    rgba(240, 216, 162, 0.3),
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  filter: blur(2px);
+  transform: skewX(-18deg);
+  animation: fx-sheen var(--d, 9s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes fx-sheen {
+  0% {
+    transform: skewX(-18deg) translateX(-70vw);
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  45% {
+    transform: skewX(-18deg) translateX(130vw);
+    opacity: 0;
+  }
+  100% {
+    transform: skewX(-18deg) translateX(130vw);
+    opacity: 0;
+  }
+}
+
+[data-theme='liujin'] .fx-pulse {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff, var(--color-gold-bright) 42%, transparent 72%);
+  animation: fx-pulse var(--d, 4s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes fx-pulse {
+  0%,
+  100% {
+    transform: scale(0.5);
+    opacity: 0.3;
+    box-shadow: 0 0 0 0 rgba(240, 216, 162, 0.55);
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 1;
+    box-shadow: 0 0 calc(var(--s) * 4) calc(var(--s) * 1.6) rgba(240, 216, 162, 0.75);
+  }
+}
+
+/* ============================================================
+   青绿山水（玉）：竹叶飘落 + 萤火 + 水波纹
+   ============================================================ */
+[data-theme='qinglv'] .fx-firefly {
+  --core: #c2fff2;
+  --halo: rgba(111, 208, 189, 0.95);
+  --halo-2: rgba(111, 208, 189, 0.4);
+}
+
+[data-theme='qinglv'] .fx-leaf {
+  position: absolute;
+  top: -8vh;
+  left: var(--x);
+  width: calc(var(--s) * 1.7);
+  height: var(--s);
+  background: linear-gradient(135deg, #c8f2df, var(--color-jade));
+  border-radius: 0 50% 0 50%;
+  opacity: 0;
+  animation: fx-fall var(--d) ease-in-out var(--delay) infinite;
+}
+
+[data-theme='qinglv'] .fx-ripple {
+  position: absolute;
+  left: var(--x);
+  bottom: 7%;
+  width: var(--s);
+  height: var(--s);
+  border: 2px solid rgba(111, 208, 189, 0.65);
+  border-radius: 50%;
+  box-shadow: 0 0 calc(var(--s) * 2) rgba(111, 208, 189, 0.35);
+  opacity: 0;
+  animation: fx-ripple var(--d, 6s) ease-out var(--delay, 0s) infinite;
+}
+@keyframes fx-ripple {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(7);
+    opacity: 0;
+  }
+}
+
+/* 减少动效偏好：关闭全部特效动画 */
+@media (prefers-reduced-motion: reduce) {
+  .fx-p,
+  .fx-rise,
+  .fx-wander,
+  .fx-fall,
+  .fx-shoot,
+  .fx-band,
+  .fx-bloom,
+  .fx-mountain,
+  .fx-seal,
+  .fx-sheen,
+  .fx-pulse,
+  .fx-leaf,
+  .fx-ripple {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}

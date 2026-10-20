@@ -1,0 +1,204 @@
+/* ============ 四套皮肤 · 奇门质感 token ============
+   通过 <html data-theme="..."> 切换，默认「仙气飘飘」。
+   每套主题覆盖同一组语义化 token（ink/moon/dim/gold/mist/jade/line + 背景/琉璃/宫格），
+   下方另有一组 --color-* 兼容别名，保证旧组件引用不破。 */
+
+/* 默认主题：仙气飘飘 · 深色夜空（黛青/月白/淡金/烟紫/玉色），神兽 = 仙鹤 */
+:root,
+[data-theme='xianqi'] {
+  color-scheme: dark;
+
+  --color-ink-950: #0a1420;
+  --color-ink-900: #0d1b2a;
+  --color-ink-800: #12243a;
+  --color-ink-700: #16283f;
+  --color-ink-600: #1e3450;
+  --color-line: #2a4258;
+  --color-moon: #e8e0d0;
+  --color-dim: #9fb0c0;
+  --color-gold: #c9a96a;
+  --color-gold-soft: #e0c58f;
+  --color-gold-bright: #f0d9a8;
+  --color-mist: #a89bd4;
+  --color-jade: #7fb0a8;
+
+  --glow: rgba(224, 197, 143, 0.4);
+  --bg-glow-gold: rgba(240, 217, 168, 0.18);
+  --bg-glow-mist: rgba(168, 155, 212, 0.28);
+  --bg-glow-jade: rgba(127, 176, 168, 0.18);
+  --bg-linear-1: #08111c;
+  --bg-linear-2: #0d1b2a;
+  --bg-linear-3: #0a1624;
+  --totem-image: url('/totems/xianhe.png');
+  --stars-opacity: 0.55;
+  --mist-a: rgba(168, 155, 212, 0.22);
+  --mist-b: rgba(127, 176, 168, 0.2);
+  --mist-c: rgba(240, 217, 168, 0.14);
+  --glass-top: rgba(30, 52, 80, 0.5);
+  --glass-bottom: rgba(13, 27, 42, 0.62);
+  --glass-hi: rgba(255, 255, 255, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.35);
+  --cell-top: rgba(30, 52, 80, 0.6);
+  --cell-bottom: rgba(13, 27, 42, 0.7);
+  --cell-hi: rgba(255, 255, 255, 0.08);
+  --cell-ring: rgba(201, 169, 106, 0.1);
+  --cell-inset-glow: rgba(168, 155, 212, 0.07);
+  --cell-outer-glow: rgba(168, 155, 212, 0.09);
+
+  --color-danger: #d98b8b;
+  --color-ok: #7fb0a8;
+}
+
+/* 鎏金夜色 · 玄墨古金 + 微朱砂，道符古印，神兽 = 玄武 */
+[data-theme='liujin'] {
+  --color-ink-950: #060606;
+  --color-ink-900: #0c0b09;
+  --color-ink-800: #131211;
+  --color-ink-700: #1a1917;
+  --color-ink-600: #24221f;
+  --color-line: #3a352a;
+  --color-moon: #e9e2d0;
+  --color-dim: #8d8674;
+  --color-gold: #c7a252;
+  --color-gold-soft: #dcc083;
+  --color-gold-bright: #f0d8a2;
+  --color-mist: #9a8fa8;
+  --color-jade: #8aa89b;
+
+  --glow: rgba(199, 162, 82, 0.35);
+  --bg-glow-gold: rgba(199, 162, 82, 0.3);
+  --bg-glow-mist: rgba(154, 143, 168, 0.18);
+  --bg-glow-jade: rgba(138, 168, 155, 0.12);
+  --bg-linear-1: #050505;
+  --bg-linear-2: #0c0b09;
+  --bg-linear-3: #070606;
+  --totem-image: url('/totems/xuanwu.png');
+  --stars-opacity: 0.4;
+  --mist-a: rgba(199, 162, 82, 0.28);
+  --mist-b: rgba(138, 168, 155, 0.12);
+  --mist-c: rgba(154, 143, 168, 0.12);
+  --glass-top: rgba(36, 34, 31, 0.5);
+  --glass-bottom: rgba(12, 11, 9, 0.62);
+  --glass-hi: rgba(255, 255, 255, 0.05);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
+  --cell-top: rgba(36, 34, 31, 0.6);
+  --cell-bottom: rgba(12, 11, 9, 0.7);
+  --cell-hi: rgba(255, 255, 255, 0.07);
+  --cell-ring: rgba(199, 162, 82, 0.14);
+  --cell-inset-glow: rgba(199, 162, 82, 0.06);
+  --cell-outer-glow: rgba(199, 162, 82, 0.08);
+
+  --color-danger: #e07a7a;
+  --color-ok: #8aa89b;
+}
+
+/* 青绿山水 · 青瓷翡翠 + 玉色 + 淡金，清新明亮，神兽 = 青龙 */
+[data-theme='qinglv'] {
+  --color-ink-950: #0a1f1c;
+  --color-ink-900: #0e2824;
+  --color-ink-800: #12352e;
+  --color-ink-700: #164038;
+  --color-ink-600: #1d4f45;
+  --color-line: #2f6a5e;
+  --color-moon: #e6f0ea;
+  --color-dim: #a4c4ba;
+  --color-gold: #c9b06a;
+  --color-gold-soft: #ddc98b;
+  --color-gold-bright: #efe0ac;
+  --color-mist: #8fb5c9;
+  --color-jade: #6fd0bd;
+
+  --glow: rgba(221, 201, 139, 0.4);
+  --bg-glow-gold: rgba(201, 176, 106, 0.14);
+  --bg-glow-mist: rgba(143, 181, 201, 0.14);
+  --bg-glow-jade: rgba(111, 208, 189, 0.32);
+  --bg-linear-1: #081713;
+  --bg-linear-2: #0e2824;
+  --bg-linear-3: #0a1a16;
+  --totem-image: url('/totems/qinglong.png');
+  --stars-opacity: 0.5;
+  --mist-a: rgba(143, 181, 201, 0.15);
+  --mist-b: rgba(111, 208, 189, 0.3);
+  --mist-c: rgba(201, 176, 106, 0.12);
+  --glass-top: rgba(29, 79, 69, 0.5);
+  --glass-bottom: rgba(14, 40, 36, 0.62);
+  --glass-hi: rgba(255, 255, 255, 0.07);
+  --glass-shadow: rgba(0, 0, 0, 0.35);
+  --cell-top: rgba(29, 79, 69, 0.6);
+  --cell-bottom: rgba(14, 40, 36, 0.7);
+  --cell-hi: rgba(255, 255, 255, 0.09);
+  --cell-ring: rgba(111, 208, 189, 0.12);
+  --cell-inset-glow: rgba(111, 208, 189, 0.07);
+  --cell-outer-glow: rgba(143, 181, 201, 0.09);
+
+  --color-danger: #d98b8b;
+  --color-ok: #6fd0bd;
+}
+
+/* 水墨留白 · 浅色宣纸 + 墨字 + 朱砂，古书卷（浅色主题），神兽 = 麒麟 */
+[data-theme='shuimo'] {
+  color-scheme: light;
+
+  --color-ink-950: #f2ecd9;
+  --color-ink-900: #f6f0e0;
+  --color-ink-800: #efe7d0;
+  --color-ink-700: #e7dcc0;
+  --color-ink-600: #dccfae;
+  --color-line: #c9b994;
+  --color-moon: #3a3226;
+  --color-dim: #7d7158;
+  --color-gold: #a97e32;
+  --color-gold-soft: #8a6a2f;
+  --color-gold-bright: #b98f3f;
+  --color-mist: #8a6a8f;
+  --color-jade: #3f7a68;
+
+  --glow: rgba(138, 106, 47, 0.25);
+  --bg-glow-gold: rgba(169, 126, 50, 0.22);
+  --bg-glow-mist: rgba(138, 106, 143, 0.16);
+  --bg-glow-jade: rgba(63, 122, 104, 0.12);
+  --bg-linear-1: #f7f2e4;
+  --bg-linear-2: #f2ecd9;
+  --bg-linear-3: #ece4cd;
+  --totem-image: url('/totems/qilin.png');
+  --stars-opacity: 0;
+  --mist-a: rgba(138, 106, 143, 0.16);
+  --mist-b: rgba(63, 122, 104, 0.1);
+  --mist-c: rgba(169, 126, 50, 0.1);
+  --glass-top: rgba(255, 252, 244, 0.72);
+  --glass-bottom: rgba(239, 231, 208, 0.7);
+  --glass-hi: rgba(255, 255, 255, 0.6);
+  --glass-shadow: rgba(120, 100, 60, 0.16);
+  --cell-top: rgba(255, 252, 244, 0.8);
+  --cell-bottom: rgba(239, 231, 208, 0.75);
+  --cell-hi: rgba(255, 255, 255, 0.7);
+  --cell-ring: rgba(169, 126, 50, 0.22);
+  --cell-inset-glow: rgba(138, 106, 143, 0.05);
+  --cell-outer-glow: rgba(120, 100, 60, 0.08);
+
+  --color-danger: #b03a2e;
+  --color-ok: #3f7a68;
+  --color-card: rgba(0, 0, 0, 0.05);
+}
+
+/* ============ 主题无关的常量 + 兼容别名 ============ */
+:root {
+  /* 楷体标题栈 */
+  --font-kai: "Kaiti SC", "STKaiti", "KaiTi", "楷体", "Noto Serif SC", serif;
+
+  /* 神兽水印位置/尺寸（各主题共用） */
+  --totem-pos: center 40%;
+  --totem-size: min(100vmin, 800px);
+
+  /* 兼容别名：旧组件仍引用 --color-*，映射到奇门 token */
+  --color-bg: var(--bg-linear-2);
+  --color-bg-deep: var(--bg-linear-1);
+  --color-bg-elevated: var(--color-ink-800);
+  --color-card: rgba(255, 255, 255, 0.045);
+  --color-text: var(--color-moon);
+  --color-text-dim: var(--color-dim);
+  --color-accent: var(--color-gold);
+  --color-accent-2: var(--color-mist);
+  --color-border: var(--color-line);
+  --color-glow: var(--glow);
+}

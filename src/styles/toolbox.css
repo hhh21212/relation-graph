@@ -1,0 +1,13 @@
+/* 百宝箱：宫格入口。 */
+
+.toolbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.toolbox-card {
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.toolbox-card:active {
+  transform: scale(0.97);
+}

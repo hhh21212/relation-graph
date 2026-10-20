@@ -1,0 +1,8 @@
+# Netlify 部署配置
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # 指定 Node 版本，避免 Netlify 默认版本过旧
+  NODE_VERSION = "20"
